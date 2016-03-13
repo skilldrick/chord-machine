@@ -1,5 +1,5 @@
 import {getAudioBuffer} from 'audiolib/ajax';
-import {synth1, fxPreset1} from 'audiolib/presets';
+import {synth1, synth2, fxPreset1} from 'audiolib/presets';
 import {ctx} from 'audiolib/audio';
 import {connect, detune, noteToFreq} from 'audiolib/util';
 import impulseResponse from '../assets/conic_echo_long_hall_short.mp3';
@@ -42,7 +42,7 @@ const getChord = (beat) => chords[Math.floor(beat / 4) % 4];
 const playRandomNote = (notes, start, length) => {
   const randomIndex = Math.floor(Math.random() * notes.length);
   const freq = noteToFreq(notes[randomIndex] - 24);
-  synth1.playFreq(detune(freq, 0.5), start, length, 2);
+  synth2.playFreq(detune(freq, 0.2), start, length, 2);
 };
 
 const playRandomNotes = (notes, start, length, count) => {
@@ -63,7 +63,7 @@ const playRandomChord = (beat, now, timeUntilBeat, beatLength) => {
 
 const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
-  connect(synth1, fxPreset, ctx.destination);
+  connect(synth2, fxPreset, ctx.destination);
 
   clock.setBpm(112);
   clock.addCallback(playRandomChord);

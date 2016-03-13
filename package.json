@@ -11,13 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "audiolib": "file:../audiolib",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
     "immutable": "^3.7.5",
+    "lodash": "^4.6.1",
     "material-ui": "^0.15.0-alpha.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.7",
-    "react-redux": "^4.0.0",
-    "react-tap-event-plugin": "^0.2.2",
-    "redux": "^3.0.0"
+    "react-tap-event-plugin": "^0.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
