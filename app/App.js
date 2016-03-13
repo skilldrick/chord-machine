@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import chords from './chords';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 class App extends Component {
   render() {
     return (
-      <div>
-        {this.state.text}
-      </div>
+      <RaisedButton label={this.state.text} />
     );
   }
 
@@ -28,5 +28,10 @@ class App extends Component {
 
 
 
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
 
 render(<App />, document.getElementById('root'));
