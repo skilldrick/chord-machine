@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
+import BpmSlider from './BpmSlider';
 import chords from './chords';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import RaisedButton from 'material-ui/lib/raised-button';
-import FlatButton from 'material-ui/lib/flat-button';
-import Slider from 'material-ui/lib/slider';
-import TextField from 'material-ui/lib/text-field';
-import _ from 'lodash';
-
 
 class App extends Component {
   render() {
@@ -54,85 +50,6 @@ class App extends Component {
   }
 }
 
-class BpmSlider extends Component {
-  render() {
-    return (
-      <div>
-        <Slider
-          style={
-            {
-              display: "inline-block",
-              height: "24px",
-              verticalAlign: "top",
-              lineHeight: "24px",
-              position: "relative",
-              width: "300px"
-            }
-          }
-          disabled={this.props.disabled}
-          defaultValue={this.state.bpm}
-          value={this.state.bpm}
-          max={this.props.maxValue}
-          min={this.props.minValue}
-          onChange={this.onSliderChange}
-          step={1}
-        />
-        <TextField
-          type="number"
-          defaultValue={this.state.bpm}
-          value={this.state.inputBpm}
-          max={this.props.maxValue}
-          min={this.props.minValue}
-          onChange={this.onTextFieldChange}
-          onBlur={this.onTextFieldBlur}
-          style={
-            {
-              marginLeft: "20px",
-              width: "50px",
-              verticalAlign: "top",
-            }
-          }
-        />
-      </div>
-    );
-  }
-
-  onSliderChange = (event, value) => {
-    this.onChange(value);
-  }
-
-  onTextFieldChange = (event) => {
-    this.onChange(event.target.value);
-  }
-
-  onChange = _.throttle((value) => {
-    const validated = this.validate(value);
-    this.props.onChange(validated);
-    // If we set the TextField to the validated BPM, the user wouldn't be able
-    // to type "60", because "6" would first be validated to "50".
-    // On blur, value is set to actual BPM
-    this.setState({ bpm: validated, inputBpm: value });
-  }, 100)
-
-  validate(value) {
-    return Math.max(Math.min(value, this.props.maxValue), this.props.minValue);
-  }
-
-  onTextFieldBlur = () => {
-    this.setState({ inputBpm: this.state.bpm });
-  }
-
-  constructor(props) {
-    super(props);
-    console.log(this.props);
-    this.state = { bpm: this.props.bpm };
-  }
-
-  static defaultProps = {
-    minValue: 50,
-    maxValue: 300
-  };
-}
 
 
 
