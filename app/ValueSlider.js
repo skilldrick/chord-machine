@@ -3,7 +3,7 @@ import Slider from 'material-ui/lib/slider';
 import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';
 
-class BpmSlider extends Component {
+class ValueSlider extends Component {
   sliderStyle = {
     display: "inline-block",
     verticalAlign: "top",
@@ -16,6 +16,7 @@ class BpmSlider extends Component {
     verticalAlign: "middle",
     display: "inline-block",
     height: "48px",
+    minWidth: "50px",
     marginRight: "20px",
     paddingTop: "20px"
   }
@@ -31,13 +32,13 @@ class BpmSlider extends Component {
     return (
       <div>
         <div style={this.labelStyle}>
-          BPM
+          {this.props.title}
         </div>
         <Slider
           style={this.sliderStyle}
           disabled={this.props.disabled}
-          defaultValue={this.state.bpm}
-          value={this.state.bpm}
+          defaultValue={this.state.value}
+          value={this.state.value}
           max={this.props.maxValue}
           min={this.props.minValue}
           onChange={this.onSliderChange}
@@ -45,8 +46,8 @@ class BpmSlider extends Component {
         />
         <TextField
           type="number"
-          defaultValue={this.state.bpm}
-          value={this.state.inputBpm}
+          defaultValue={this.state.value}
+          value={this.state.rawValue}
           max={this.props.maxValue}
           min={this.props.minValue}
           onChange={this.onTextFieldChange}
@@ -68,10 +69,10 @@ class BpmSlider extends Component {
   onChange = _.throttle((value) => {
     const validated = this.validate(value);
     this.props.onChange(validated);
-    // If we set the TextField to the validated BPM, the user wouldn't be able
-    // to type "60", because "6" would first be validated to "50".
-    // On blur, value is set to actual BPM
-    this.setState({ bpm: validated, inputBpm: value });
+    // If we set the TextField to the validated value, the user wouldn't be able
+    // to type "60", because "6" would first be validated to "50" (when 50 is minValue).
+    // On blur, value is set to actual value
+    this.setState({ value: validated, rawValue: value });
   }, 100)
 
   validate(value) {
@@ -79,13 +80,13 @@ class BpmSlider extends Component {
   }
 
   onTextFieldBlur = () => {
-    this.setState({ inputBpm: this.state.bpm });
+    this.setState({ rawValue: this.state.value });
   }
 
   constructor(props) {
     super(props);
     console.log(this.props);
-    this.state = { bpm: this.props.bpm };
+    this.state = { value: this.props.value };
   }
 
   static defaultProps = {
@@ -94,4 +95,4 @@ class BpmSlider extends Component {
   };
 }
 
-module.exports = BpmSlider;
+module.exports = ValueSlider;

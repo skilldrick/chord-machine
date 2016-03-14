@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import BpmSlider from './BpmSlider';
+import ValueSlider from './ValueSlider';
 import chords from './chords';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -11,7 +11,12 @@ class App extends Component {
       <div>
         <RaisedButton style={{marginRight: "10px"}} disabled={this.state.disabled || this.state.playing} label="Play" onMouseUp={this.play} />
         <RaisedButton disabled={this.state.disabled || !this.state.playing} label="Stop" onMouseUp={this.stop} />
-        <BpmSlider disabled={this.state.disabled} bpm={this.props.bpm} onChange={this.bpmChange} />
+        <ValueSlider
+          title="BPM"
+          disabled={this.state.disabled}
+          value={this.props.bpm}
+          onChange={this.bpmChange}
+        />
       </div>
 
     );
