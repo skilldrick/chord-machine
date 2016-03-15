@@ -9,6 +9,7 @@ class ValueSlider extends Component {
     verticalAlign: "top",
     position: "relative",
     width: "150px",
+    height: "30px"
   }
 
   labelStyle = {
@@ -30,7 +31,7 @@ class ValueSlider extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{height: "50px"}}>
         <div style={this.labelStyle}>
           {this.props.title}
         </div>

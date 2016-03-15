@@ -47,14 +47,14 @@ class App extends Component {
           title="BPM"
           disabled={this.state.disabled}
           initialValue={this.props.bpm}
-          onChange={this.bpmChange}
+          onChange={(value) => this.state.clock.setBpm(value)}
         />
 
         <ValueSlider
           title="8ve -"
           disabled={this.state.disabled}
           initialValue={this.props.octavesDown}
-          onChange={this.octavesDownChange}
+          onChange={(value) => this.state.chords.setOctavesDown(value)}
           minValue={0}
           maxValue={3}
         />
@@ -63,7 +63,7 @@ class App extends Component {
           title="8ve +"
           disabled={this.state.disabled}
           initialValue={this.props.octavesUp}
-          onChange={this.octavesUpChange}
+          onChange={(value) => this.state.chords.setOctavesUp(value)}
           minValue={0}
           maxValue={3}
         />
@@ -72,9 +72,49 @@ class App extends Component {
           title="Notes"
           disabled={this.state.disabled}
           initialValue={this.props.notes}
-          onChange={this.notesChange}
+          onChange={(value) => this.state.chords.setNotes(value)}
           minValue={1}
           maxValue={20}
+        />
+
+        <ValueSlider
+          title="Attack"
+          disabled={this.state.disabled}
+          initialValue={this.props.attack}
+          onChange={(value) => this.state.synth.adsr.attack = value}
+          minValue={0.01}
+          maxValue={0.5}
+          step={0.01}
+        />
+
+        <ValueSlider
+          title="Decay"
+          disabled={this.state.disabled}
+          initialValue={this.props.decay}
+          onChange={(value) => this.state.synth.adsr.decay = value}
+          minValue={0.01}
+          maxValue={0.5}
+          step={0.01}
+        />
+
+        <ValueSlider
+          title="Sustain"
+          disabled={this.state.disabled}
+          initialValue={this.props.sustain}
+          onChange={(value) => this.state.synth.adsr.sustain = value}
+          minValue={0}
+          maxValue={1}
+          step={0.01}
+        />
+
+        <ValueSlider
+          title="Release"
+          disabled={this.state.disabled}
+          initialValue={this.props.release}
+          onChange={(value) => this.state.synth.adsr.release = value}
+          minValue={0.01}
+          maxValue={0.5}
+          step={0.01}
         />
       </div>
     );
@@ -94,22 +134,6 @@ class App extends Component {
     this.setState({ playing: false });
   }
 
-  octavesDownChange = (value) => {
-    this.state.chords.setOctavesDown(value);
-  }
-
-  octavesUpChange = (value) => {
-    this.state.chords.setOctavesUp(value);
-  }
-
-  notesChange = (value) => {
-    this.state.chords.setNotes(value);
-  }
-
-  bpmChange = (bpm) => {
-    this.state.clock.setBpm(bpm);
-  }
-
   wickedGame = () => {
     this.stop();
     this.state.chords.setChords(wickedGame);
@@ -125,11 +149,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    init.clockPromise.then(([clock, chords]) => {
+    init.clockPromise.then(([clock, chords, synth]) => {
       this.setState({
         disabled: false,
         clock: clock,
-        chords: chords
+        chords: chords,
+        synth: synth
       });
 
       chords.setOctavesDown(this.props.octavesDown);
@@ -152,7 +177,12 @@ class App extends Component {
     bpm: 112,
     octavesDown: 0,
     octavesUp: 1,
-    notes: 4
+    notes: 4,
+    // adsr info is currently duplicated between here and presets.js
+    attack: 0.1,
+    decay: 0.3,
+    sustain: 0.9,
+    release: 0.1
   };
 }
 
