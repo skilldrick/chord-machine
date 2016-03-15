@@ -21,6 +21,7 @@ class App extends Component {
           label="Play"
           onMouseUp={this.play}
         />
+
         <RaisedButton
           style={this.buttonStyle}
           disabled={this.state.disabled || !this.state.playing}
@@ -34,17 +35,46 @@ class App extends Component {
           label="Hotel California"
           onMouseUp={this.hotelCalifornia}
         />
+
         <FlatButton
           style={this.buttonStyle}
           disabled={this.state.disabled || this.state.wickedGame}
           label="Wicked Game"
           onMouseUp={this.wickedGame}
         />
+
         <ValueSlider
           title="BPM"
           disabled={this.state.disabled}
-          value={this.props.bpm}
+          initialValue={this.props.bpm}
           onChange={this.bpmChange}
+        />
+
+        <ValueSlider
+          title="8ve -"
+          disabled={this.state.disabled}
+          initialValue={this.props.octavesDown}
+          onChange={this.octavesDownChange}
+          minValue={0}
+          maxValue={3}
+        />
+
+        <ValueSlider
+          title="8ve +"
+          disabled={this.state.disabled}
+          initialValue={this.props.octavesUp}
+          onChange={this.octavesUpChange}
+          minValue={0}
+          maxValue={3}
+        />
+
+        <ValueSlider
+          title="Notes"
+          disabled={this.state.disabled}
+          initialValue={this.props.notes}
+          onChange={this.notesChange}
+          minValue={1}
+          maxValue={20}
         />
       </div>
     );
@@ -64,6 +94,22 @@ class App extends Component {
     this.setState({ playing: false });
   }
 
+  octavesDownChange = (value) => {
+    this.state.chords.setOctavesDown(value);
+  }
+
+  octavesUpChange = (value) => {
+    this.state.chords.setOctavesUp(value);
+  }
+
+  notesChange = (value) => {
+    this.state.chords.setNotes(value);
+  }
+
+  bpmChange = (bpm) => {
+    this.state.clock.setBpm(bpm);
+  }
+
   wickedGame = () => {
     this.stop();
     this.state.chords.setChords(wickedGame);
@@ -78,10 +124,6 @@ class App extends Component {
     setTimeout(this.play, 1000);
   }
 
-  bpmChange = (bpm) => {
-    this.state.clock.setBpm(bpm);
-  }
-
   componentDidMount() {
     init.clockPromise.then(([clock, chords]) => {
       this.setState({
@@ -89,6 +131,11 @@ class App extends Component {
         clock: clock,
         chords: chords
       });
+
+      chords.setOctavesDown(this.props.octavesDown);
+      chords.setOctavesUp(this.props.octavesUp);
+      chords.setNotes(this.props.notes);
+      clock.setBpm(this.props.bpm);
     });
   }
 
@@ -100,9 +147,14 @@ class App extends Component {
       hotelCalifornia: true
     };
   }
+
+  static defaultProps = {
+    bpm: 112,
+    octavesDown: 0,
+    octavesUp: 1,
+    notes: 4
+  };
 }
-
-
 
 
 // Needed for onTouchTap
@@ -111,4 +163,4 @@ class App extends Component {
 // https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
-render(<App bpm={112} />, document.getElementById('root'));
+render(<App />, document.getElementById('root'));

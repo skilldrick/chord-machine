@@ -42,7 +42,7 @@ class ValueSlider extends Component {
           max={this.props.maxValue}
           min={this.props.minValue}
           onChange={this.onSliderChange}
-          step={1}
+          step={this.props.step}
         />
         <TextField
           type="number"
@@ -53,6 +53,7 @@ class ValueSlider extends Component {
           onChange={this.onTextFieldChange}
           onBlur={this.onTextFieldBlur}
           style={this.inputStyle}
+          step={this.props.step}
         />
       </div>
     );
@@ -85,12 +86,13 @@ class ValueSlider extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: this.props.value };
+    this.state = { value: this.props.initialValue };
   }
 
   static defaultProps = {
     minValue: 50,
-    maxValue: 300
+    maxValue: 300,
+    step: 1
   };
 }
 

@@ -25,6 +25,7 @@ const A$ = 13;
 const Bb = 13;
 const B = 14;
 const C2 = 15;
+const C$2 = 16;
 
 const wickedGame = [
   [B0, D, F$],
@@ -41,7 +42,7 @@ const hotelCalifornia = [
   [G, B, D],
   [D, F$, A],
   [E, G, B],
-  [F$, A$, C$],
+  [F$, A$, C$2],
 ];
 
 class Chords {
@@ -53,30 +54,50 @@ class Chords {
     this.synth.playFreq(freq, start, length);
   }
 
-  playRandomNote(notes, start, length) {
-    const randomIndex = Math.floor(Math.random() * notes.length);
-    const freq = noteToFreq(notes[randomIndex] - 24);
+  getNoteFromChord(chord, index) {
+    return chord[index] - 24;
+  }
+
+  playRandomNote(chord, start, length) {
+    const randomOctave = Math.floor(
+      Math.random() * (this.octavesDown + this.octavesUp + 1)
+    ) - this.octavesDown;
+
+    const randomNote = this.getNoteFromChord(chord, Math.floor(Math.random() * chord.length));
+
+    const freq = noteToFreq(randomNote + randomOctave * 12);
     this.playFreq(detune(freq, 0.2), start, length);
   }
 
-  playRandomNotes(notes, start, length, count) {
+  playRandomNotes(chord, start, length, count) {
     const noteLength = length / count;
     for (let i = 0; i < count; i++) {
-      this.playRandomNote(notes, start + i * noteLength, noteLength);
+      this.playRandomNote(chord, start + i * noteLength, noteLength);
     }
   }
 
   playRandomChord(beat, now, timeUntilBeat, beatLength) {
-    console.log(beat);
-    const notes = 3; // number of simultaneous random notes to play
     const notesPerBeat = 2;
-    for (let i = 0; i < notes; i++) {
+    for (let i = 0; i < this.notes; i++) {
       this.playRandomNotes(this.getChord(beat), now + timeUntilBeat, beatLength, notesPerBeat);
     }
   }
 
   setChords(chordSequence) {
     this.chordSequence = chordSequence;
+  }
+
+  setOctavesUp(octavesUp) {
+    this.octavesUp = octavesUp;
+  }
+
+  setOctavesDown(octavesDown) {
+    this.octavesDown = octavesDown;
+  }
+
+  // number of simultaneous random notes to play
+  setNotes(notes) {
+    this.notes = notes;
   }
 
   constructor(synth) {

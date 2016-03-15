@@ -10,8 +10,6 @@ const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
   connect(synth2, fxPreset, ctx.destination);
 
-  clock.setBpm(112);
-
   const chords = new Chords(synth2);
   clock.addCallback(chords.playRandomChord.bind(chords));
 
