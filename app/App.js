@@ -1,12 +1,21 @@
+// react stuff
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import ValueSlider from './ValueSlider';
-import ChordSelector from './ChordSelector';
-import init from './init';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// material-ui components
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
+
+// my components
+import ValueSlider from './ValueSlider';
+import ChordSelector from './ChordSelector';
+import SynthSelector from './SynthSelector';
+
+// audio stuff
+import init from './init';
 import {sequences} from './chords';
+
 
 class App extends Component {
   buttonStyle = {
@@ -48,6 +57,15 @@ class App extends Component {
           onChange={this.chordsChange}
         />
 
+        <SynthSelector
+          options={[
+            ['harmonicSynth', 'Harmonic Synth'],
+            ['fmSynth', 'FM Synth']
+          ]}
+          defaultSelected={this.props.synthName}
+          onChange={this.synthChange}
+        />
+
         <ValueSlider
           title="BPM"
           disabled={this.state.disabled}
@@ -86,7 +104,7 @@ class App extends Component {
           title="Color"
           disabled={this.state.disabled}
           initialValue={this.props.synth.color}
-          onChange={(value) => this.state.synth.color = value}
+          onChange={(value) => this.state.chords.synth.color = value}
           minValue={1}
           maxValue={10}
           step={1}
@@ -96,7 +114,7 @@ class App extends Component {
           title="Intensity"
           disabled={this.state.disabled}
           initialValue={this.props.synth.intensity}
-          onChange={(value) => this.state.synth.intensity = value}
+          onChange={(value) => this.state.chords.synth.intensity = value}
           minValue={0}
           maxValue={9999}
         />
@@ -106,7 +124,7 @@ class App extends Component {
           title="Attack"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.attack}
-          onChange={(value) => this.state.synth.adsr.attack = value}
+          onChange={(value) => this.state.chords.synth.adsr.attack = value}
           minValue={0}
           maxValue={0.5}
           step={0.01}
@@ -116,7 +134,7 @@ class App extends Component {
           title="Decay"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.decay}
-          onChange={(value) => this.state.synth.adsr.decay = value}
+          onChange={(value) => this.state.chords.synth.adsr.decay = value}
           minValue={0}
           maxValue={0.5}
           step={0.01}
@@ -126,7 +144,7 @@ class App extends Component {
           title="Sustain"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.sustain}
-          onChange={(value) => this.state.synth.adsr.sustain = value}
+          onChange={(value) => this.state.chords.synth.adsr.sustain = value}
           minValue={0}
           maxValue={1}
           step={0.01}
@@ -136,7 +154,7 @@ class App extends Component {
           title="Release"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.release}
-          onChange={(value) => this.state.synth.adsr.release = value}
+          onChange={(value) => this.state.chords.synth.adsr.release = value}
           minValue={0.01}
           maxValue={0.5}
           step={0.01}
@@ -168,16 +186,28 @@ class App extends Component {
     this.state.chords.chordSequence = sequences[key];
   }
 
+  synthChange = (name) => {
+    this.state.chords.synth = this.state.synths[name];
+  }
+
   componentDidMount() {
-    init.clockPromise.then(([clock, chords, synth]) => {
+    init.clockPromise.then(([clock, chords, synths]) => {
       this.setState({
         disabled: false,
         clock: clock,
         chords: chords,
-        synth: synth
+        synths: synths
       });
 
-      Object.assign(synth, this.props.synth);
+      // TODO: do this better
+      Object.keys(synths).forEach((name) =>
+        Object.assign(synths[name], this.props.synth)
+      );
+
+      //TODO: find a better way to keep synth up-to-date
+      //and to update synth properties
+      chords.synth = synths[this.props.synthName];
+
       Object.assign(chords, this.props.chords);
 
       clock.setBpm(this.props.bpm);
@@ -210,6 +240,8 @@ class App extends Component {
         release: 0.2
       }
     },
+    synthName: 'harmonicSynth'
+
   };
 }
 

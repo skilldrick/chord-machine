@@ -10,17 +10,21 @@ import {Chords} from './chords';
 
 const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
-  const gain = nodes.createGain(0.3);
-  //const synth = new FmSynth();
-  const synth = synth2;
+  const fmGain = nodes.createGain(0.15);
+  const synthGain = nodes.createGain(0.4);
+  const synths = {
+    fmSynth: new FmSynth(),
+    harmonicSynth: synth2
+  };
 
-  connect(synth, gain, fxPreset, ctx.destination);
+  connect(synths.fmSynth, fmGain, fxPreset, ctx.destination)
+  connect(synths.harmonicSynth, synthGain, fxPreset, ctx.destination)
 
-  const chords = new Chords(synth);
+  const chords = new Chords(synths.harmonicSynth);
   clock.addCallback(chords.playRandomChord.bind(chords));
 
   window.clock = clock;
-  return [clock, chords, synth];
+  return [clock, chords, synths];
 });
 
 module.exports = {

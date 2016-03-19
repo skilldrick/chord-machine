@@ -40,7 +40,7 @@ const synth2 = new HarmonicSynth({
   decay: 0.3,
   sustain: 0.9,
   release: 0.1
-}, [0.6, 0.5, 0.1, 0.3, 0.1, 0.1]);
+}, [1, 1, 0.3, 0.6, 0.3, 0.3, 0.2, 0.2, 0.1, 0.1]);
 
 
 module.exports = {synth1, synth2, fxPreset1};

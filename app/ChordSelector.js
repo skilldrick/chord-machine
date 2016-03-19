@@ -22,9 +22,6 @@ class ChordSelector extends Component {
     this.props.onChange(value);
   }
 
-  componentDidMount() {
-  }
-
   constructor(props) {
     super(props);
     this.state = { value: this.props.initialValue };
