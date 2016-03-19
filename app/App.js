@@ -5,7 +5,7 @@ import init from './init';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import {hotelCalifornia, wickedGame} from './chords';
+import {sequences} from './chords';
 
 class App extends Component {
   buttonStyle = {
@@ -51,38 +51,49 @@ class App extends Component {
         />
 
         <ValueSlider
-          title="8ve -"
-          disabled={this.state.disabled}
-          initialValue={this.props.octavesDown}
-          onChange={(value) => this.state.chords.setOctavesDown(value)}
-          minValue={0}
-          maxValue={3}
-        />
-
-        <ValueSlider
           title="8ve +"
           disabled={this.state.disabled}
-          initialValue={this.props.octavesUp}
-          onChange={(value) => this.state.chords.setOctavesUp(value)}
+          initialValue={this.props.chords.octavesUp}
+          onChange={(value) => this.state.chords.octavesUp = value}
           minValue={0}
-          maxValue={3}
+          maxValue={4}
         />
 
         <ValueSlider
           title="Notes"
           disabled={this.state.disabled}
-          initialValue={this.props.notes}
-          onChange={(value) => this.state.chords.setNotes(value)}
+          initialValue={this.props.chords.notes}
+          onChange={(value) => this.state.chords.notes = value}
           minValue={1}
           maxValue={20}
         />
 
         <ValueSlider
+          title="Color"
+          disabled={this.state.disabled}
+          initialValue={this.props.fm.color}
+          onChange={(value) => this.state.synth.color = value}
+          minValue={1}
+          maxValue={10}
+          step={1}
+        />
+
+        <ValueSlider
+          title="Intensity"
+          disabled={this.state.disabled}
+          initialValue={this.props.fm.intensity}
+          onChange={(value) => this.state.synth.intensity = value}
+          minValue={0}
+          maxValue={9999}
+        />
+
+
+        <ValueSlider
           title="Attack"
           disabled={this.state.disabled}
-          initialValue={this.props.attack}
+          initialValue={this.props.adsr.attack}
           onChange={(value) => this.state.synth.adsr.attack = value}
-          minValue={0.01}
+          minValue={0}
           maxValue={0.5}
           step={0.01}
         />
@@ -90,9 +101,9 @@ class App extends Component {
         <ValueSlider
           title="Decay"
           disabled={this.state.disabled}
-          initialValue={this.props.decay}
+          initialValue={this.props.adsr.decay}
           onChange={(value) => this.state.synth.adsr.decay = value}
-          minValue={0.01}
+          minValue={0}
           maxValue={0.5}
           step={0.01}
         />
@@ -100,7 +111,7 @@ class App extends Component {
         <ValueSlider
           title="Sustain"
           disabled={this.state.disabled}
-          initialValue={this.props.sustain}
+          initialValue={this.props.adsr.sustain}
           onChange={(value) => this.state.synth.adsr.sustain = value}
           minValue={0}
           maxValue={1}
@@ -110,7 +121,7 @@ class App extends Component {
         <ValueSlider
           title="Release"
           disabled={this.state.disabled}
-          initialValue={this.props.release}
+          initialValue={this.props.adsr.release}
           onChange={(value) => this.state.synth.adsr.release = value}
           minValue={0.01}
           maxValue={0.5}
@@ -135,17 +146,13 @@ class App extends Component {
   }
 
   wickedGame = () => {
-    this.stop();
-    this.state.chords.setChords(wickedGame);
+    this.state.chords.chordSequence = sequences.wickedGame;
     this.setState({ wickedGame: true, hotelCalifornia: false });
-    setTimeout(this.play, 1000);
   }
 
   hotelCalifornia = () => {
-    this.stop();
-    this.state.chords.setChords(hotelCalifornia);
+    this.state.chords.chordSequence = sequences.hotelCalifornia;
     this.setState({ wickedGame: false, hotelCalifornia: true });
-    setTimeout(this.play, 1000);
   }
 
   componentDidMount() {
@@ -157,9 +164,15 @@ class App extends Component {
         synth: synth
       });
 
-      chords.setOctavesDown(this.props.octavesDown);
-      chords.setOctavesUp(this.props.octavesUp);
-      chords.setNotes(this.props.notes);
+      chords.octavesDown = this.props.chords.octavesDown;
+      chords.octavesUp = this.props.chords.octavesUp;
+      chords.notes = this.props.chords.notes;
+
+      synth.adsr = this.props.adsr;
+
+      synth.color = this.props.fm.color;
+      synth.intensity = this.props.fm.intensity;
+
       clock.setBpm(this.props.bpm);
     });
   }
@@ -174,15 +187,22 @@ class App extends Component {
   }
 
   static defaultProps = {
-    bpm: 112,
-    octavesDown: 0,
-    octavesUp: 1,
-    notes: 4,
-    // adsr info is currently duplicated between here and presets.js
-    attack: 0.1,
-    decay: 0.3,
-    sustain: 0.9,
-    release: 0.1
+    bpm: 200,
+    chords: {
+      octavesDown: 0,
+      octavesUp: 3,
+      notes: 2,
+    },
+    fm: {
+      color: 5,
+      intensity: 5000
+    },
+    adsr: {
+      attack: 0.01,
+      decay: 0.05,
+      sustain: 0.6,
+      release: 0.2
+    }
   };
 }
 

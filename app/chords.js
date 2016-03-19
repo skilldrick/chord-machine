@@ -112,26 +112,12 @@ class Chords {
     }
   }
 
-  setChords(chordSequence) {
-    this.chordSequence = chordSequence;
-  }
-
-  setOctavesUp(octavesUp) {
-    this.octavesUp = octavesUp;
-  }
-
-  setOctavesDown(octavesDown) {
-    this.octavesDown = octavesDown;
-  }
-
-  // number of simultaneous random notes to play
-  setNotes(notes) {
-    this.notes = notes;
-  }
-
   constructor(synth) {
     this.synth = synth;
-    this.setChords(hotelCalifornia);
+    this.chordSequence = hotelCalifornia;
+    this.notes = 1;
+    this.octavesUp = 0;
+    this.octavesDown = 0;
   }
 }
 
