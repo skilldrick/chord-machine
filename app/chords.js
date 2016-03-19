@@ -1,12 +1,17 @@
 import {detune, noteToFreq} from 'audiolib/util';
+import fx from 'audiolib/fx';
 
 // Numbers of semitones from A
+const E0 = -5;
+const F0 = -4;
+const F$0 = -3;
+const G0 = -2;
 const G$0 = -1;
-const Ab0 = -1;
-const A0 = 0;
-const A$0 = 1;
-const Bb0 = 1;
-const B0 = 2;
+const Ab = -1;
+const A = 0;
+const A$ = 1;
+const Bb = 1;
+const B = 2;
 const C = 3;
 const C$ = 4;
 const Db = 4;
@@ -19,31 +24,55 @@ const F$ = 9;
 const Gb = 9;
 const G = 10;
 const G$ = 11;
-const Ab = 11;
-const A = 12;
-const A$ = 13;
-const Bb = 13;
-const B = 14;
+const Ab2 = 11;
+const A2 = 12;
+const A$2 = 13;
+const Bb2 = 13;
+const B2 = 14;
 const C2 = 15;
 const C$2 = 16;
+const D2 = 17;
 
 const wickedGame = [
-  [B0, D, F$],
-  [A0, C$, E],
-  [G$0, B0, E],
-  [G$0, B0, E]
+  [B, D, F$],
+  [A, C$, E],
+  [G$0, B, E],
+  [G$0, B, E]
 ];
 
 const hotelCalifornia = [
-  [B0, D, F$],
-  [F$, A$, C$],
+  [B, D, F$],
+  [F$0, A$, C$],
   [A, C$, E],
   [E, G$, B],
   [G, B, D],
-  [D, F$, A],
-  [E, G, B],
-  [F$, A$, C$2],
+  [D, F$, A2],
+  [E, G, B2],
+  [F$0, A$, C$],
 ];
+
+const follia = [
+  [B, D, F$],
+  [F$0, A$, C$],
+  [B, D, F$],
+  [A, C$, E],
+  [D, F$, A2],
+  [A, C$, E],
+  [B, D, F$],
+  [F$0, A$, C$],
+];
+
+const pachelbel = [
+  [C, E, G],
+  [G0, B, D],
+  [A, C, E],
+  [E0, G0, B],
+  [F, A, C],
+  [C, E, G],
+  [F, A, C],
+  [G0, B, D],
+];
+
 
 class Chords {
   getChord(beat) {
@@ -108,6 +137,10 @@ class Chords {
 
 module.exports = {
   Chords,
-  hotelCalifornia,
-  wickedGame
+  sequences: {
+    hotelCalifornia,
+    wickedGame,
+    follia,
+    pachelbel
+  }
 };
