@@ -17,7 +17,7 @@ class ValueSlider extends Component {
     verticalAlign: "middle",
     display: "inline-block",
     height: "48px",
-    minWidth: "60px",
+    minWidth: "68px",
     marginRight: "20px",
     paddingTop: "20px"
   }

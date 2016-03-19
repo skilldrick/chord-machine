@@ -10,9 +10,9 @@ import {Chords} from './chords';
 
 const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
-  //const synth = synth2;
+  const synth = synth2;
   const gain = nodes.createGain(0.3);
-  const synth = new FmSynth();
+  //const synth = new FmSynth();
 
   connect(synth, gain, fxPreset, ctx.destination);
 

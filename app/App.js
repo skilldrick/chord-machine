@@ -58,6 +58,15 @@ class App extends Component {
         />
 
         <ValueSlider
+          title="Base 8ve"
+          disabled={this.state.disabled}
+          initialValue={this.props.chords.baseOctave}
+          onChange={(value) => this.state.chords.baseOctave = value}
+          minValue={0}
+          maxValue={6}
+        />
+
+        <ValueSlider
           title="8ve +"
           disabled={this.state.disabled}
           initialValue={this.props.chords.octavesUp}
@@ -195,8 +204,8 @@ class App extends Component {
   static defaultProps = {
     bpm: 200,
     chords: {
-      octavesDown: 0,
-      octavesUp: 3,
+      baseOctave: 3,
+      octavesUp: 2,
       notes: 2,
     },
     synth: {

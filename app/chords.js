@@ -84,13 +84,13 @@ class Chords {
   }
 
   getNoteFromChord(chord, index) {
-    return chord[index] - 24;
+    return chord[index] - 60;
   }
 
   playRandomNote(chord, start, length) {
     const randomOctave = Math.floor(
-      Math.random() * (this.octavesDown + this.octavesUp + 1)
-    ) - this.octavesDown;
+      Math.random() * (this.octavesUp + 1)
+    ) + this.baseOctave;
 
     const randomNote = this.getNoteFromChord(chord, Math.floor(Math.random() * chord.length));
 
@@ -117,7 +117,7 @@ class Chords {
     this.chordSequence = hotelCalifornia;
     this.notes = 1;
     this.octavesUp = 0;
-    this.octavesDown = 0;
+    this.baseOctave = 4;
   }
 }
 
