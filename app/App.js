@@ -71,7 +71,7 @@ class App extends Component {
         <ValueSlider
           title="Color"
           disabled={this.state.disabled}
-          initialValue={this.props.fm.color}
+          initialValue={this.props.synth.color}
           onChange={(value) => this.state.synth.color = value}
           minValue={1}
           maxValue={10}
@@ -81,7 +81,7 @@ class App extends Component {
         <ValueSlider
           title="Intensity"
           disabled={this.state.disabled}
-          initialValue={this.props.fm.intensity}
+          initialValue={this.props.synth.intensity}
           onChange={(value) => this.state.synth.intensity = value}
           minValue={0}
           maxValue={9999}
@@ -91,7 +91,7 @@ class App extends Component {
         <ValueSlider
           title="Attack"
           disabled={this.state.disabled}
-          initialValue={this.props.adsr.attack}
+          initialValue={this.props.synth.adsr.attack}
           onChange={(value) => this.state.synth.adsr.attack = value}
           minValue={0}
           maxValue={0.5}
@@ -101,7 +101,7 @@ class App extends Component {
         <ValueSlider
           title="Decay"
           disabled={this.state.disabled}
-          initialValue={this.props.adsr.decay}
+          initialValue={this.props.synth.adsr.decay}
           onChange={(value) => this.state.synth.adsr.decay = value}
           minValue={0}
           maxValue={0.5}
@@ -111,7 +111,7 @@ class App extends Component {
         <ValueSlider
           title="Sustain"
           disabled={this.state.disabled}
-          initialValue={this.props.adsr.sustain}
+          initialValue={this.props.synth.adsr.sustain}
           onChange={(value) => this.state.synth.adsr.sustain = value}
           minValue={0}
           maxValue={1}
@@ -121,7 +121,7 @@ class App extends Component {
         <ValueSlider
           title="Release"
           disabled={this.state.disabled}
-          initialValue={this.props.adsr.release}
+          initialValue={this.props.synth.adsr.release}
           onChange={(value) => this.state.synth.adsr.release = value}
           minValue={0.01}
           maxValue={0.5}
@@ -164,14 +164,8 @@ class App extends Component {
         synth: synth
       });
 
-      chords.octavesDown = this.props.chords.octavesDown;
-      chords.octavesUp = this.props.chords.octavesUp;
-      chords.notes = this.props.chords.notes;
-
-      synth.adsr = this.props.adsr;
-
-      synth.color = this.props.fm.color;
-      synth.intensity = this.props.fm.intensity;
+      Object.assign(synth, this.props.synth);
+      Object.assign(chords, this.props.chords);
 
       clock.setBpm(this.props.bpm);
     });
@@ -193,16 +187,16 @@ class App extends Component {
       octavesUp: 3,
       notes: 2,
     },
-    fm: {
-      color: 5,
-      intensity: 5000
+    synth: {
+      color: 8,
+      intensity: 2000,
+      adsr: {
+        attack: 0.01,
+        decay: 0.05,
+        sustain: 0.6,
+        release: 0.2
+      }
     },
-    adsr: {
-      attack: 0.01,
-      decay: 0.05,
-      sustain: 0.6,
-      release: 0.2
-    }
   };
 }
 
