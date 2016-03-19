@@ -29,6 +29,13 @@ class App extends Component {
           onMouseUp={this.stop}
         />
 
+        <RaisedButton
+          style={this.buttonStyle}
+          disabled={this.state.disabled || !this.state.playing}
+          label="Pause"
+          onMouseUp={this.pause}
+        />
+
         <FlatButton
           style={this.buttonStyle}
           disabled={this.state.disabled || this.state.hotelCalifornia}
@@ -142,6 +149,11 @@ class App extends Component {
 
   stop = () => {
     this.state.clock.stop();
+    this.setState({ playing: false });
+  }
+
+  pause = () => {
+    this.state.clock.pause();
     this.setState({ playing: false });
   }
 
