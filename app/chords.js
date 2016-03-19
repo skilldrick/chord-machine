@@ -51,7 +51,7 @@ const hotelCalifornia = [
   [F$0, A$, C$],
 ];
 
-const follia = [
+const folia = [
   [B, D, F$],
   [F$0, A$, C$],
   [B, D, F$],
@@ -126,7 +126,7 @@ module.exports = {
   sequences: {
     hotelCalifornia,
     wickedGame,
-    follia,
+    folia,
     pachelbel
   }
 };

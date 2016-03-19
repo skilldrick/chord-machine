@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import ValueSlider from './ValueSlider';
+import ChordSelector from './ChordSelector';
 import init from './init';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FlatButton from 'material-ui/lib/flat-button';
@@ -36,18 +37,15 @@ class App extends Component {
           onMouseUp={this.pause}
         />
 
-        <FlatButton
-          style={this.buttonStyle}
-          disabled={this.state.disabled || this.state.hotelCalifornia}
-          label="Hotel California"
-          onMouseUp={this.hotelCalifornia}
-        />
-
-        <FlatButton
-          style={this.buttonStyle}
-          disabled={this.state.disabled || this.state.wickedGame}
-          label="Wicked Game"
-          onMouseUp={this.wickedGame}
+        <ChordSelector
+          options={[
+            ['hotelCalifornia', 'Hotel California'],
+            ['wickedGame', 'Wicked Game'],
+            ['folia', 'Folia'],
+            ['pachelbel', "Pachelbel's Canon"]
+          ]}
+          initialValue="hotelCalifornia"
+          onChange={this.chordsChange}
         />
 
         <ValueSlider
@@ -166,14 +164,8 @@ class App extends Component {
     this.setState({ playing: false });
   }
 
-  wickedGame = () => {
-    this.state.chords.chordSequence = sequences.wickedGame;
-    this.setState({ wickedGame: true, hotelCalifornia: false });
-  }
-
-  hotelCalifornia = () => {
-    this.state.chords.chordSequence = sequences.hotelCalifornia;
-    this.setState({ wickedGame: false, hotelCalifornia: true });
+  chordsChange = (key) => {
+    this.state.chords.chordSequence = sequences[key];
   }
 
   componentDidMount() {
