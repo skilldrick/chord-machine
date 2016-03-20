@@ -17,8 +17,9 @@ const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
     harmonicSynth: synth2
   };
 
-  connect(synths.fmSynth, fmGain, fxPreset, ctx.destination)
-  connect(synths.harmonicSynth, synthGain, fxPreset, ctx.destination)
+  connect(synths.fmSynth, fmGain, fxPreset);
+  connect(synths.harmonicSynth, synthGain, fxPreset);
+  connect(fxPreset, ctx.destination);
 
   const chords = new Chords(synths.harmonicSynth);
   clock.addCallback(chords.playRandomChord.bind(chords));

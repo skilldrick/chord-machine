@@ -1,6 +1,6 @@
 import {connect, node} from 'audiolib/util';
 import {HarmonicSynth} from 'audiolib/synth';
-import fx from 'audiolib/fx';
+import * as fx from 'audiolib/fx';
 import nodes from 'audiolib/nodes';
 
 const synth1 = new HarmonicSynth(0.3, {

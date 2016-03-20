@@ -70,14 +70,14 @@ class App extends Component {
           title="BPM"
           disabled={this.state.disabled}
           initialValue={this.props.bpm}
-          onChange={(value) => this.state.clock.setBpm(value)}
+          onChange={(value) => this._clock.setBpm(value)}
         />
 
         <ValueSlider
           title="Base 8ve"
           disabled={this.state.disabled}
           initialValue={this.props.chords.baseOctave}
-          onChange={(value) => this.state.chords.baseOctave = value}
+          onChange={(value) => this._chords.baseOctave = value}
           minValue={0}
           maxValue={6}
         />
@@ -86,7 +86,7 @@ class App extends Component {
           title="8ve +"
           disabled={this.state.disabled}
           initialValue={this.props.chords.octavesUp}
-          onChange={(value) => this.state.chords.octavesUp = value}
+          onChange={(value) => this._chords.octavesUp = value}
           minValue={0}
           maxValue={4}
         />
@@ -95,7 +95,7 @@ class App extends Component {
           title="Notes"
           disabled={this.state.disabled}
           initialValue={this.props.chords.notes}
-          onChange={(value) => this.state.chords.notes = value}
+          onChange={(value) => this._chords.notes = value}
           minValue={1}
           maxValue={20}
         />
@@ -104,7 +104,7 @@ class App extends Component {
           title="Color"
           disabled={this.state.disabled}
           initialValue={this.props.synth.color}
-          onChange={(value) => this.state.chords.synth.color = value}
+          onChange={(value) => this._chords.synth.color = value}
           minValue={1}
           maxValue={10}
           step={1}
@@ -114,7 +114,7 @@ class App extends Component {
           title="Intensity"
           disabled={this.state.disabled}
           initialValue={this.props.synth.intensity}
-          onChange={(value) => this.state.chords.synth.intensity = value}
+          onChange={(value) => this._chords.synth.intensity = value}
           minValue={0}
           maxValue={9999}
         />
@@ -124,7 +124,7 @@ class App extends Component {
           title="Attack"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.attack}
-          onChange={(value) => this.state.chords.synth.adsr.attack = value}
+          onChange={(value) => this._chords.synth.adsr.attack = value}
           minValue={0}
           maxValue={0.5}
           step={0.01}
@@ -134,7 +134,7 @@ class App extends Component {
           title="Decay"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.decay}
-          onChange={(value) => this.state.chords.synth.adsr.decay = value}
+          onChange={(value) => this._chords.synth.adsr.decay = value}
           minValue={0}
           maxValue={0.5}
           step={0.01}
@@ -144,7 +144,7 @@ class App extends Component {
           title="Sustain"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.sustain}
-          onChange={(value) => this.state.chords.synth.adsr.sustain = value}
+          onChange={(value) => this._chords.synth.adsr.sustain = value}
           minValue={0}
           maxValue={1}
           step={0.01}
@@ -154,7 +154,7 @@ class App extends Component {
           title="Release"
           disabled={this.state.disabled}
           initialValue={this.props.synth.adsr.release}
-          onChange={(value) => this.state.chords.synth.adsr.release = value}
+          onChange={(value) => this._chords.synth.adsr.release = value}
           minValue={0.01}
           maxValue={0.5}
           step={0.01}
@@ -168,49 +168,50 @@ class App extends Component {
   }
 
   play = () => {
-    this.state.clock.start();
+    this._clock.start();
     this.setState({ playing: true });
   }
 
   stop = () => {
-    this.state.clock.stop();
+    this._clock.stop();
     this.setState({ playing: false });
   }
 
   pause = () => {
-    this.state.clock.pause();
+    this._clock.pause();
     this.setState({ playing: false });
   }
 
   chordsChange = (key) => {
-    this.state.chords.chordSequence = sequences[key];
+    this._chords.chordSequence = sequences[key];
   }
 
   synthChange = (name) => {
-    this.state.chords.synth = this.state.synths[name];
+    this._chords.synth = this._synths[name];
   }
 
   componentDidMount() {
     init.clockPromise.then(([clock, chords, synths]) => {
+      this._clock = clock;
+      this._chords = chords;
+      this._synths = synths;
+
       this.setState({
-        disabled: false,
-        clock: clock,
-        chords: chords,
-        synths: synths
+        disabled: false
       });
 
       // TODO: do this better
-      Object.keys(synths).forEach((name) =>
+      Object.keys(this._synths).forEach((name) =>
         Object.assign(synths[name], this.props.synth)
       );
 
       //TODO: find a better way to keep synth up-to-date
       //and to update synth properties
-      chords.synth = synths[this.props.synthName];
+      this._chords.synth = synths[this.props.synthName];
 
-      Object.assign(chords, this.props.chords);
+      Object.assign(this._chords, this.props.chords);
 
-      clock.setBpm(this.props.bpm);
+      this._clock.setBpm(this.props.bpm);
     });
   }
 
