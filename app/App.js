@@ -119,7 +119,6 @@ class App extends Component {
           maxValue={9999}
         />
 
-
         <ValueSlider
           title="Attack"
           disabled={this.state.disabled}

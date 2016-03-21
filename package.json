@@ -10,7 +10,7 @@
   "author": "Nick Morgan (@skilldrick)",
   "license": "ISC",
   "dependencies": {
-    "audiolib": "file:../audiolib",
+    "Sine": "file:../sine",
     "babel-preset-stage-0": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "immutable": "^3.7.5",
