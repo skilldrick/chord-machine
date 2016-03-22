@@ -29,7 +29,7 @@ class Footer extends Component {
     )
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     logo(document.getElementById("logo"), 50);
   }
 }
