@@ -1,7 +1,7 @@
-import {connect, node} from 'audiolib/util';
-import {HarmonicSynth} from 'audiolib/synth';
-import fx from 'audiolib/fx';
-import nodes from 'audiolib/nodes';
+import {connect, node} from 'sine/util';
+import {HarmonicSynth} from 'sine/synth';
+import {createDistortion, createDelayFeedback, createReverb} from 'sine/fx';
+import {createFilter} from 'sine/nodes';
 
 const synth1 = new HarmonicSynth(0.3, {
   attack: 0.1,
@@ -13,11 +13,11 @@ const synth1 = new HarmonicSynth(0.3, {
 // fxPreset1 requires a convolver buffer.
 // This is passed in so the application has control of resource loading
 const fxPreset1 = (convolverBuffer) => {
-  const filter = nodes.createFilter(3000);
-  const distortion = fx.createDistortion(1.2);
-  const reverb = fx.createReverb(0.5, convolverBuffer);
+  const filter = createFilter(3000);
+  const distortion = createDistortion(1.2);
+  const reverb = createReverb(0.5, convolverBuffer);
 
-  const delay = fx.createDelayFeedback({
+  const delay = createDelayFeedback({
     delayTime: 1.333,
     feedback: 0.4,
     dryMix: 1,

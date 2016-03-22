@@ -1,17 +1,17 @@
-import nodes from 'audiolib/nodes';
-import {ctx, getCurrentTime} from 'audiolib/audio';
-import {connect} from 'audiolib/util';
-import {getAudioBuffer} from 'audiolib/ajax';
+import {createGain} from 'sine/nodes';
+import {ctx, getCurrentTime} from 'sine/audio';
+import {connect} from 'sine/util';
+import getAudioBuffer from 'sine/ajax';
 import impulseResponse from '../assets/conic_echo_long_hall_short.mp3';
-import clock from 'audiolib/clock';
-import {FmSynth} from 'audiolib/synth';
+import clock from 'sine/clock';
+import {FmSynth} from 'sine/synth';
 import {synth1, synth2, fxPreset1} from './presets';
 import {Chords} from './chords';
 
 const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
-  const fmGain = nodes.createGain(0.15);
-  const synthGain = nodes.createGain(0.4);
+  const fmGain = createGain(0.15);
+  const synthGain = createGain(0.4);
   const synths = {
     fmSynth: new FmSynth(),
     harmonicSynth: synth2

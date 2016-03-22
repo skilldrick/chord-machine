@@ -1,5 +1,5 @@
-import {detune, noteToFreq} from 'audiolib/util';
-import fx from 'audiolib/fx';
+import {detune, noteToFreq} from 'sine/util';
+import fx from 'sine/fx';
 
 // Numbers of semitones from A
 const E0 = -5;
