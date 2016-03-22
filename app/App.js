@@ -11,11 +11,11 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import ValueSlider from './ValueSlider';
 import ChordSelector from './ChordSelector';
 import SynthSelector from './SynthSelector';
+import Footer from './Footer';
 
 // audio stuff
 import init from './init';
 import {sequences} from './chords';
-
 
 class App extends Component {
   buttonStyle = {
@@ -158,6 +158,8 @@ class App extends Component {
           maxValue={0.5}
           step={0.01}
         />
+
+        <Footer />
       </div>
     );
   }
@@ -241,7 +243,6 @@ class App extends Component {
       }
     },
     synthName: 'harmonicSynth'
-
   };
 }
 
