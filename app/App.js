@@ -83,24 +83,28 @@ class App extends Component {
             {
               title: "Base 8ve",
               key: "baseOctave",
+              description: "Controls the starting octave of the chords.",
               minValue: 1,
               maxValue: 6
             },
             {
               title: "8ve +",
               key: "octavesUp",
+              description: "Play chords over multiple octaves.",
               minValue: 0,
               maxValue: 4
             },
             {
               title: "Detune",
               key: "detune",
+              description: "Randomly detune each note by up to this many cents.",
               minValue: 0,
               maxValue: 100
             },
             {
               title: "Notes",
               key: "notes",
+              description: "How many notes are played at once.",
               minValue: 1,
               maxValue: 20
             }
@@ -116,18 +120,21 @@ class App extends Component {
             {
               title: "Color",
               key: "color",
+              description: "The frequency of the modulator as a factor of the base frequency.",
               minValue: 1,
               maxValue: 10
             },
             {
               title: "Intensity",
               key: "intensity",
+              description: "The amplitude of the modulator.",
               minValue: 0,
               maxValue: 9999
             },
             {
               title: "FM Detune",
               key: "fmDetune",
+              description: "The number of cents the modulator is detuned by.",
               minValue: 0,
               maxValue: 500
             },
@@ -144,24 +151,28 @@ class App extends Component {
             {
               title: "Attack",
               key: "attack",
+              description: "The attack time of the synth.",
               minValue: 0,
               maxValue: 0.5,
             },
             {
               title: "Decay",
               key: "decay",
+              description: "The decay time of the synth.",
               minValue: 0,
               maxValue: 0.5,
             },
             {
               title: "Sustain",
               key: "sustain",
+              description: "The level of the note after decay.",
               minValue: 0,
               maxValue: 1,
             },
             {
               title: "Release",
               key: "release",
+              description: "The release time of the synth.",
               minValue: 0,
               maxValue: 1,
             }
@@ -212,7 +223,9 @@ class App extends Component {
         disabled: false
       });
 
-      // TODO: do this better
+      // TODO: do this better.
+      // Currently adsr is kept in sync across both synths because they share
+      // the same adsr object :/
       Object.keys(this._synths).forEach((name) =>
         Object.assign(synths[name], this.props.synth)
       );

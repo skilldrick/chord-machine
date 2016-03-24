@@ -32,7 +32,7 @@ class ValueSlider extends Component {
   render() {
     return (
       <div style={{height: "50px"}}>
-        <div style={this.labelStyle}>
+        <div style={this.labelStyle} title={this.props.description}>
           {this.props.title}
         </div>
         <Slider
