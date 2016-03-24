@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 
 // my components
 import ValueSlider from './ValueSlider';
+import SliderGroup from './SliderGroup';
 import ChordSelector from './ChordSelector';
 import SynthSelector from './SynthSelector';
 import Footer from './Footer';
@@ -73,90 +74,98 @@ class App extends Component {
           onChange={(value) => this._clock.setBpm(value)}
         />
 
-        <ValueSlider
-          title="Base 8ve"
+        <SliderGroup
+          title="Chord settings"
           disabled={this.state.disabled}
-          initialValue={this.props.chords.baseOctave}
-          onChange={(value) => this._chords.baseOctave = value}
-          minValue={0}
-          maxValue={6}
+          initialValue={this.props.chords}
+          modelObject={this._chords}
+          sliderProps={[
+            {
+              title: "Base 8ve",
+              key: "baseOctave",
+              minValue: 1,
+              maxValue: 6
+            },
+            {
+              title: "8ve +",
+              key: "octavesUp",
+              minValue: 0,
+              maxValue: 4
+            },
+            {
+              title: "Detune",
+              key: "detune",
+              minValue: 0,
+              maxValue: 100
+            },
+            {
+              title: "Notes",
+              key: "notes",
+              minValue: 1,
+              maxValue: 20
+            }
+          ]}
         />
 
-        <ValueSlider
-          title="8ve +"
+        <SliderGroup
+          title="FM Synth settings"
           disabled={this.state.disabled}
-          initialValue={this.props.chords.octavesUp}
-          onChange={(value) => this._chords.octavesUp = value}
-          minValue={0}
-          maxValue={4}
+          initialValue={this.props.synth}
+          modelObject={this.state.synth}
+          sliderProps={[
+            {
+              title: "Color",
+              key: "color",
+              minValue: 1,
+              maxValue: 10
+            },
+            {
+              title: "Intensity",
+              key: "intensity",
+              minValue: 0,
+              maxValue: 9999
+            },
+            {
+              title: "FM Detune",
+              key: "fmDetune",
+              minValue: 0,
+              maxValue: 500
+            },
+          ]}
         />
 
-        <ValueSlider
-          title="Notes"
+        <SliderGroup
+          title="ADSR"
           disabled={this.state.disabled}
-          initialValue={this.props.chords.notes}
-          onChange={(value) => this._chords.notes = value}
-          minValue={1}
-          maxValue={20}
-        />
-
-        <ValueSlider
-          title="Color"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.color}
-          onChange={(value) => this._chords.synth.color = value}
-          minValue={1}
-          maxValue={10}
-          step={1}
-        />
-
-        <ValueSlider
-          title="Intensity"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.intensity}
-          onChange={(value) => this._chords.synth.intensity = value}
-          minValue={0}
-          maxValue={9999}
-        />
-
-        <ValueSlider
-          title="Attack"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.adsr.attack}
-          onChange={(value) => this._chords.synth.adsr.attack = value}
-          minValue={0}
-          maxValue={0.5}
+          initialValue={this.props.synth.adsr}
+          modelObject={this.state.synth.adsr}
           step={0.01}
-        />
-
-        <ValueSlider
-          title="Decay"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.adsr.decay}
-          onChange={(value) => this._chords.synth.adsr.decay = value}
-          minValue={0}
-          maxValue={0.5}
-          step={0.01}
-        />
-
-        <ValueSlider
-          title="Sustain"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.adsr.sustain}
-          onChange={(value) => this._chords.synth.adsr.sustain = value}
-          minValue={0}
-          maxValue={1}
-          step={0.01}
-        />
-
-        <ValueSlider
-          title="Release"
-          disabled={this.state.disabled}
-          initialValue={this.props.synth.adsr.release}
-          onChange={(value) => this._chords.synth.adsr.release = value}
-          minValue={0.01}
-          maxValue={0.5}
-          step={0.01}
+          sliderProps={[
+            {
+              title: "Attack",
+              key: "attack",
+              minValue: 0,
+              maxValue: 0.5,
+            },
+            {
+              title: "Decay",
+              key: "decay",
+              minValue: 0,
+              maxValue: 0.5,
+            },
+            {
+              title: "Sustain",
+              key: "sustain",
+              minValue: 0,
+              maxValue: 1,
+            },
+            {
+              title: "Release",
+              key: "release",
+              minValue: 0,
+              maxValue: 1,
+            }
+          ]}
         />
 
         <Footer />
@@ -188,7 +197,9 @@ class App extends Component {
   }
 
   synthChange = (name) => {
-    this._chords.synth = this._synths[name];
+    const synth = this._synths[name];
+    this._chords.synth = synth;
+    this.setState({ synth });
   }
 
   componentDidMount() {
@@ -208,7 +219,7 @@ class App extends Component {
 
       //TODO: find a better way to keep synth up-to-date
       //and to update synth properties
-      this._chords.synth = synths[this.props.synthName];
+      this.synthChange(this.props.synthName);
 
       Object.assign(this._chords, this.props.chords);
 
@@ -221,7 +232,8 @@ class App extends Component {
     this.state = {
       disabled: true,
       playing: false,
-      hotelCalifornia: true
+      hotelCalifornia: true,
+      synth: {}
     };
   }
 
@@ -230,11 +242,13 @@ class App extends Component {
     chords: {
       baseOctave: 3,
       octavesUp: 2,
+      detune: 5,
       notes: 2,
     },
     synth: {
       color: 8,
       intensity: 2000,
+      fmDetune: 0,
       adsr: {
         attack: 0.01,
         decay: 0.05,

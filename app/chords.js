@@ -1,4 +1,4 @@
-import {detune, noteToFreq} from 'sine/util';
+import {noteToFreq} from 'sine/util';
 import fx from 'sine/fx';
 
 // Numbers of semitones from A
@@ -75,12 +75,16 @@ const pachelbel = [
 
 
 class Chords {
+  randomDetune() {
+    return Math.random() * this.detune - this.detune / 2;
+  }
+
   getChord(beat) {
     return this.chordSequence[Math.floor(beat / 4) % this.chordSequence.length];
   }
 
   playFreq(freq, start, length) {
-    this.synth.playFreq(freq, start, length);
+    this.synth.playFreq(freq, start, length, this.randomDetune());
   }
 
   getNoteFromChord(chord, index) {
@@ -95,7 +99,7 @@ class Chords {
     const randomNote = this.getNoteFromChord(chord, Math.floor(Math.random() * chord.length));
 
     const freq = noteToFreq(randomNote + randomOctave * 12);
-    this.playFreq(detune(freq, 0.2), start, length);
+    this.playFreq(freq, start, length);
   }
 
   playRandomNotes(chord, start, length, count) {
@@ -113,11 +117,13 @@ class Chords {
   }
 
   constructor(synth) {
+    // These all get reset in App.js
     this.synth = synth;
     this.chordSequence = hotelCalifornia;
     this.notes = 1;
     this.octavesUp = 0;
     this.baseOctave = 4;
+    this.detune = 0;
   }
 }
 
