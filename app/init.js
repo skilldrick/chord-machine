@@ -8,7 +8,7 @@ import {FmSynth} from 'sine/synth';
 import {synth1, synth2, fxPreset1} from './presets';
 import {Chords} from './chords';
 
-const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
+const initPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
   const fmGain = createGain(0.15);
   const synthGain = createGain(0.4);
@@ -24,10 +24,9 @@ const clockPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const chords = new Chords(synths.harmonicSynth);
   clock.addCallback(chords.playRandomChord.bind(chords));
 
-  window.clock = clock;
   return [clock, chords, synths];
 });
 
 module.exports = {
-  clockPromise
+  initPromise
 };

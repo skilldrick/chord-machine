@@ -7,7 +7,7 @@ class Footer extends Component {
     return (
       <a
         href="https://github.com/skilldrick/sine"
-        class="logo"
+        id="logo"
         style={{
           display: "block",
           marginTop: "50px",

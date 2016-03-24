@@ -13,6 +13,7 @@ class SliderGroup extends Component {
             <ValueSlider
               title={slider.title}
               description={slider.description}
+              key={slider.key}
               disabled={this.props.disabled}
               initialValue={this.props.initialValue[slider.key]}
               onChange={ (value) => this.props.modelObject[slider.key] = value }

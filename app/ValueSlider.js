@@ -47,6 +47,7 @@ class ValueSlider extends Component {
         />
         <TextField
           type="number"
+          name={this.props.title}
           defaultValue={this.state.value}
           value={this.state.rawValue}
           max={this.props.maxValue}

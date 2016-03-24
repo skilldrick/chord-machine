@@ -213,8 +213,17 @@ class App extends Component {
     this.setState({ synth });
   }
 
-  componentDidMount() {
-    init.clockPromise.then(([clock, chords, synths]) => {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      disabled: true,
+      playing: false,
+      hotelCalifornia: true,
+      synth: {}
+    };
+
+    init.initPromise.then(([clock, chords, synths]) => {
       this._clock = clock;
       this._chords = chords;
       this._synths = synths;
@@ -238,16 +247,6 @@ class App extends Component {
 
       this._clock.setBpm(this.props.bpm);
     });
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      disabled: true,
-      playing: false,
-      hotelCalifornia: true,
-      synth: {}
-    };
   }
 
   static defaultProps = {
