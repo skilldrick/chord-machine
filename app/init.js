@@ -58,8 +58,8 @@ class EasyHarmonicSynth extends HarmonicSynth {
 
 const initPromise = getAudioBuffer(impulseResponse).then(buffer => {
   const fxPreset = fxPreset1(buffer);
-  const fmGain = createGain(0.15);
-  const synthGain = createGain(0.4);
+  const fmGain = createGain(0.1);
+  const synthGain = createGain(0.3);
   const synths = {
     fmSynth: new FmSynth(),
     harmonicSynth: new EasyHarmonicSynth()

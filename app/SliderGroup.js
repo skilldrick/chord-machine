@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
+import _ from 'lodash';
 
 import ValueSlider from './ValueSlider';
 
@@ -15,7 +16,7 @@ class SliderGroup extends Component {
               description={slider.description}
               key={slider.key}
               disabled={this.props.disabled}
-              initialValue={this.props.initialValue[slider.key]}
+              initialValue={this.modelObject[slider.key]}
               onChange={ (value) => this.onChange(slider.key, value) }
               minValue={slider.minValue}
               maxValue={slider.maxValue}
@@ -27,15 +28,14 @@ class SliderGroup extends Component {
     )
   }
 
-  // Allow key to specify property or method on the model object
-  onChange(key, value) {
-    const modelObject = this.props.modelObject;
+  onChange = (key, value) => {
+    this.modelObject[key] = value;
+    this.props.onChange(this.modelObject);
+  }
 
-    if (typeof modelObject[key] == 'function') {
-      modelObject[key](value);
-    } else {
-      modelObject[key] = value;
-    }
+  constructor(props) {
+    super(props);
+    this.modelObject = Object.assign({}, props.modelObject);
   }
 }
 

@@ -71,14 +71,14 @@ class App extends Component {
           title="BPM"
           disabled={this.state.disabled}
           initialValue={this.props.bpm}
-          onChange={(value) => this._clock.setBpm(value)}
+          onChange={(value) => this.bpmChanged(value)}
         />
 
         <SliderGroup
           title="Chord settings"
           disabled={this.state.disabled}
-          initialValue={this.props.chords}
-          modelObject={this._chords}
+          modelObject={this.props.chordsSettings}
+          onChange={ (settings) => this.chordsSettingsChange(settings) }
           sliderProps={[
             {
               title: "Base 8ve",
@@ -114,8 +114,8 @@ class App extends Component {
         <SliderGroup
           title="Harmonic Synth settings"
           disabled={this.state.disabled}
-          initialValue={this.props.synth}
-          modelObject={this.state.synth}
+          modelObject={this.props.harmonicSynthSettings}
+          onChange={ (settings) => this.harmonicSynthSettingsChange(settings) }
           sliderProps={[
             {
               title: "Odd:Even",
@@ -139,8 +139,8 @@ class App extends Component {
         <SliderGroup
           title="FM Synth settings"
           disabled={this.state.disabled}
-          initialValue={this.props.synth}
-          modelObject={this.state.synth}
+          modelObject={this.props.fmSynthSettings}
+          onChange={ (settings) => this.fmSynthSettingsChange(settings) }
           sliderProps={[
             {
               title: "Color",
@@ -169,8 +169,8 @@ class App extends Component {
         <SliderGroup
           title="ADSR"
           disabled={this.state.disabled}
-          initialValue={this.props.synth.adsr}
-          modelObject={this.state.synth.adsr}
+          modelObject={this.props.adsrSettings}
+          onChange={ (settings) => this.adsrSettingsChange(settings) }
           step={0.01}
           sliderProps={[
             {
@@ -228,14 +228,36 @@ class App extends Component {
     this.setState({ playing: false });
   }
 
+  bpmChanged = (value) => {
+    this._clock.setBpm(value);
+  }
+
   chordsChange = (key) => {
     this._chords.chordSequence = sequences[key];
   }
 
+  chordsSettingsChange = (settings) => {
+    Object.assign(this._chords, settings);
+  }
+
+  fmSynthSettingsChange = (settings) => {
+    Object.assign(this._synths.fmSynth, settings);
+  }
+
+  harmonicSynthSettingsChange = (settings) => {
+    const harmonicSynth = this._synths.harmonicSynth;
+    harmonicSynth.oddEven(settings.oddEven);
+    harmonicSynth.lowHigh(settings.lowHigh);
+  }
+
+  adsrSettingsChange = (settings) => {
+    Object.keys(this._synths).forEach((key) =>
+      this._synths[key].adsr = settings
+    );
+  }
+
   synthChange = (name) => {
-    const synth = this._synths[name];
-    this._chords.synth = synth;
-    this.setState({ synth });
+    this._chords.synth = this._synths[name];
   }
 
   constructor(props) {
@@ -244,7 +266,6 @@ class App extends Component {
     this.state = {
       disabled: true,
       playing: false,
-      synth: {}
     };
 
     init.initPromise.then(([clock, chords, synths]) => {
@@ -256,44 +277,40 @@ class App extends Component {
         disabled: false
       });
 
-      // TODO: do this better.
-      // Currently adsr is kept in sync across both synths because they share
-      // the same adsr object :/
-      Object.keys(this._synths).forEach((name) =>
-        Object.assign(synths[name], this.props.synth)
-      );
-
-      //TODO: find a better way to keep synth up-to-date
-      //and to update synth properties
-      this.synthChange(this.props.synthName);
-
-      Object.assign(this._chords, this.props.chords);
-
-      this._clock.setBpm(this.props.bpm);
+      // Initialize objects based on defaultProps
+      this.chordsChange(this.props.chordSequence);
+      this.chordsSettingsChange(this.props.chordsSettings);
+      this.harmonicSynthSettingsChange(this.props.harmonicSynthSettings);
+      this.fmSynthSettingsChange(this.props.fmSynthSettings);
+      this.adsrSettingsChange(this.props.adsrSettings);
+      this.bpmChanged(this.props.bpm);
     });
   }
 
   static defaultProps = {
     bpm: 200,
-    chords: {
+    chordsSettings: {
       baseOctave: 3,
       octavesUp: 2,
       detune: 5,
       notes: 2,
     },
-    synth: {
+    harmonicSynthSettings: {
+      oddEven: 0.7,
+      lowHigh: 0.1
+    },
+    fmSynthSettings: {
       color: 8,
       intensity: 2000,
-      fmDetune: 0,
-      //oddEven: 0.7, // can't do this because it overrides the method
-      //lowHigh: 0.1,
-      adsr: {
-        attack: 0.01,
-        decay: 0.05,
-        sustain: 0.6,
-        release: 0.2
-      }
+      fmDetune: 0
     },
+    adsrSettings: {
+      attack: 0.01,
+      decay: 0.05,
+      sustain: 0.6,
+      release: 0.2
+    },
+    chordSequence: 'hotelCalifornia',
     synthName: 'harmonicSynth'
   };
 }
