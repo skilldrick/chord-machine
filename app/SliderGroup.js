@@ -16,7 +16,7 @@ class SliderGroup extends Component {
               key={slider.key}
               disabled={this.props.disabled}
               initialValue={this.props.initialValue[slider.key]}
-              onChange={ (value) => this.props.modelObject[slider.key] = value }
+              onChange={ (value) => this.onChange(slider.key, value) }
               minValue={slider.minValue}
               maxValue={slider.maxValue}
               step={slider.step || this.props.step}
@@ -24,8 +24,19 @@ class SliderGroup extends Component {
           )
         )}
       </div>
-      )
+    )
+  }
+
+  // Allow key to specify property or method on the model object
+  onChange(key, value) {
+    const modelObject = this.props.modelObject;
+
+    if (typeof modelObject[key] == 'function') {
+      modelObject[key](value);
+    } else {
+      modelObject[key] = value;
     }
+  }
 }
 
 module.exports = SliderGroup;

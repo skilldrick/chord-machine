@@ -112,6 +112,31 @@ class App extends Component {
         />
 
         <SliderGroup
+          title="Harmonic Synth settings"
+          disabled={this.state.disabled}
+          initialValue={this.props.synth}
+          modelObject={this.state.synth}
+          sliderProps={[
+            {
+              title: "Odd:Even",
+              key: "oddEven",
+              description: "",
+              minValue: 0,
+              maxValue: 1,
+              step: 0.1
+            },
+            {
+              title: "Low:High",
+              key: "lowHigh",
+              description: "",
+              minValue: 0,
+              maxValue: 1,
+              step: 0.1
+            }
+          ]}
+        />
+
+        <SliderGroup
           title="FM Synth settings"
           disabled={this.state.disabled}
           initialValue={this.props.synth}
@@ -219,7 +244,6 @@ class App extends Component {
     this.state = {
       disabled: true,
       playing: false,
-      hotelCalifornia: true,
       synth: {}
     };
 
@@ -261,6 +285,8 @@ class App extends Component {
       color: 8,
       intensity: 2000,
       fmDetune: 0,
+      //oddEven: 0.7, // can't do this because it overrides the method
+      //lowHigh: 0.1,
       adsr: {
         attack: 0.01,
         decay: 0.05,
