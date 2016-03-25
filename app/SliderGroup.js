@@ -6,26 +6,30 @@ import ValueSlider from './ValueSlider';
 
 class SliderGroup extends Component {
   render() {
-    return (
-      <div>
-        <h3>{this.props.title}</h3>
-        {this.props.sliderProps.map((slider) =>
-          (
-            <ValueSlider
-              title={slider.title}
-              description={slider.description}
-              key={slider.key}
-              disabled={this.props.disabled}
-              initialValue={this.modelObject[slider.key]}
-              onChange={ (value) => this.onChange(slider.key, value) }
-              minValue={slider.minValue}
-              maxValue={slider.maxValue}
-              step={slider.step || this.props.step}
-            />
-          )
-        )}
-      </div>
-    )
+    if (this.props.hidden) {
+      return <div />;
+    } else {
+      return (
+        <div>
+          <h3>{this.props.title}</h3>
+          {this.props.sliderProps.map((slider) =>
+            (
+              <ValueSlider
+                title={slider.title}
+                description={slider.description}
+                key={slider.key}
+                disabled={this.props.disabled}
+                initialValue={this.modelObject[slider.key]}
+                onChange={ (value) => this.onChange(slider.key, value) }
+                minValue={slider.minValue}
+                maxValue={slider.maxValue}
+                step={slider.step || this.props.step}
+              />
+            )
+          )}
+        </div>
+      )
+    }
   }
 
   onChange = (key, value) => {

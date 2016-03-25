@@ -54,7 +54,7 @@ class App extends Component {
             ['folia', 'Folia'],
             ['pachelbel', "Pachelbel's Canon"]
           ]}
-          initialValue="hotelCalifornia"
+          initialValue={this.props.chordSequence}
           onChange={this.chordsChange}
         />
 
@@ -114,6 +114,7 @@ class App extends Component {
         <SliderGroup
           title="Harmonic Synth settings"
           disabled={this.state.disabled}
+          hidden={this.state.synthName != 'harmonicSynth'}
           modelObject={this.props.harmonicSynthSettings}
           onChange={ (settings) => this.harmonicSynthSettingsChange(settings) }
           sliderProps={[
@@ -139,6 +140,7 @@ class App extends Component {
         <SliderGroup
           title="FM Synth settings"
           disabled={this.state.disabled}
+          hidden={this.state.synthName != 'fmSynth'}
           modelObject={this.props.fmSynthSettings}
           onChange={ (settings) => this.fmSynthSettingsChange(settings) }
           sliderProps={[
@@ -257,6 +259,7 @@ class App extends Component {
   }
 
   synthChange = (name) => {
+    this.setState({ synthName: name });
     this._chords.synth = this._synths[name];
   }
 
@@ -274,7 +277,8 @@ class App extends Component {
       this._synths = synths;
 
       this.setState({
-        disabled: false
+        disabled: false,
+        synthName: this.props.synthName
       });
 
       // Initialize objects based on defaultProps
