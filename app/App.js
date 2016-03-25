@@ -238,6 +238,11 @@ class App extends Component {
     this._chords.chordSequence = sequences[key];
   }
 
+  synthChange = (name) => {
+    this.setState({ synthName: name });
+    this._chords.synth = this._synths[name];
+  }
+
   chordsSettingsChange = (settings) => {
     Object.assign(this._chords, settings);
   }
@@ -256,11 +261,6 @@ class App extends Component {
     Object.keys(this._synths).forEach((key) =>
       this._synths[key].adsr = settings
     );
-  }
-
-  synthChange = (name) => {
-    this.setState({ synthName: name });
-    this._chords.synth = this._synths[name];
   }
 
   constructor(props) {
@@ -292,7 +292,7 @@ class App extends Component {
   }
 
   static defaultProps = {
-    bpm: 200,
+    bpm: 150,
     chordsSettings: {
       baseOctave: 3,
       octavesUp: 2,
@@ -300,8 +300,8 @@ class App extends Component {
       notes: 2,
     },
     harmonicSynthSettings: {
-      oddEven: 0.7,
-      lowHigh: 0.1
+      oddEven: 0.6,
+      lowHigh: 0
     },
     fmSynthSettings: {
       color: 8,
