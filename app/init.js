@@ -28,7 +28,6 @@ class EasyHarmonicSynth extends HarmonicSynth {
 
   resetCoefficients() {
     this.coefficientsOrType = this.calculateCoefficients();
-    console.log(this.coefficientsOrType);
   }
 
   calculateCoefficients() {

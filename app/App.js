@@ -107,7 +107,21 @@ class App extends Component {
               description: "How many notes are played at once.",
               minValue: 1,
               maxValue: 20
-            }
+            },
+            {
+              title: "Notes per Bar",
+              key: "notesPerBar",
+              description: "How many notes are played per bar.",
+              minValue: 1,
+              maxValue: 16
+            },
+            {
+              title: "Bars per chord",
+              key: "barsPerChord",
+              description: "How many bars are played for each chord.",
+              minValue: 1,
+              maxValue: 8
+            },
           ]}
         />
 
@@ -292,12 +306,14 @@ class App extends Component {
   }
 
   static defaultProps = {
-    bpm: 150,
+    bpm: 120,
     chordsSettings: {
       baseOctave: 3,
       octavesUp: 2,
       detune: 5,
       notes: 2,
+      notesPerBar: 4,
+      barsPerChord: 2
     },
     harmonicSynthSettings: {
       oddEven: 0.6,

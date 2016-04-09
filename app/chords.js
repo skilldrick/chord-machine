@@ -79,8 +79,8 @@ class Chords {
     return Math.random() * this.detune - this.detune / 2;
   }
 
-  getChord(beat) {
-    return this.chordSequence[Math.floor(beat / 4) % this.chordSequence.length];
+  getChord(bar) {
+    return this.chordSequence[bar % this.chordSequence.length];
   }
 
   playFreq(freq, start, length) {
@@ -102,17 +102,35 @@ class Chords {
     this.playFreq(freq, start, length);
   }
 
+  /*
   playRandomNotes(chord, start, length, count) {
     const noteLength = length / count;
     for (let i = 0; i < count; i++) {
       this.playRandomNote(chord, start + i * noteLength, noteLength);
     }
   }
+  */
+  playRandomNotes(chord, start, length, howMany) {
+    for (let i = 0; i < howMany; i++) {
+      this.playRandomNote(chord, start, length);
+    }
+  }
 
   playRandomChord(beat, now, timeUntilBeat, beatLength) {
-    const notesPerBeat = 2;
-    for (let i = 0; i < this.notes; i++) {
-      this.playRandomNotes(this.getChord(beat), now + timeUntilBeat, beatLength, notesPerBeat);
+    const bar = Math.floor(beat / beatsPerChord);
+    const beatsPerChord = this.beatsPerBar * this.barsPerChord;
+    const beatWithinBar = beat % this.beatsPerBar;
+    const noteLengthInBeats = this.beatsPerBar / this.notesPerBar;
+    const noteLength = noteLengthInBeats * beatLength;
+
+    for (let i = 0; i < this.notesPerBar; i++) {
+      const noteTimeInBeats = i * noteLengthInBeats;
+
+      if (noteTimeInBeats >= beatWithinBar && noteTimeInBeats < beatWithinBar + 1) {
+        const noteOffset = noteTimeInBeats - beatWithinBar;
+        const timeUntilNote = timeUntilBeat + noteOffset * beatLength;
+        this.playRandomNotes(this.getChord(bar), now + timeUntilNote, noteLength, this.notes);
+      }
     }
   }
 
@@ -120,9 +138,12 @@ class Chords {
     // These all get reset in App.js
     this.synth = synth;
     this.chordSequence = hotelCalifornia;
-    this.notes = 1;
+    this.notes = 0;
+    this.beatsPerBar = 4;
+    this.notesPerBar = 0;
+    this.barsPerChord = 0;
     this.octavesUp = 0;
-    this.baseOctave = 4;
+    this.baseOctave = 0;
     this.detune = 0;
   }
 }
