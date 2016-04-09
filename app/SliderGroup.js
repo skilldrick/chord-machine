@@ -5,13 +5,18 @@ import _ from 'lodash';
 import ValueSlider from './ValueSlider';
 
 class SliderGroup extends Component {
+  h3Style = {
+    fontFamily: "Roboto",
+    marginBottom: 0
+  }
+
   render() {
     if (this.props.hidden) {
       return <div />;
     } else {
       return (
         <div>
-          <h3>{this.props.title}</h3>
+          <h3 style={this.h3Style}>{this.props.title}</h3>
           {this.props.sliderProps.map((slider) =>
             (
               <ValueSlider
