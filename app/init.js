@@ -16,12 +16,12 @@ class EasyHarmonicSynth extends HarmonicSynth {
     this.resetCoefficients();
   }
 
-  oddEven = (value) => {
+  setOddEven = (value) => {
     this._oddEven = value;
     this.resetCoefficients();
   };
 
-  lowHigh = (value) => {
+  setLowHigh = (value) => {
     this._lowHigh = value;
     this.resetCoefficients();
   };
@@ -56,7 +56,8 @@ class EasyHarmonicSynth extends HarmonicSynth {
 
 
 const initPromise = getAudioBuffer(impulseResponse).then(buffer => {
-  const fxPreset = fxPreset1(buffer);
+  const fx = fxPreset1(buffer);
+  window.fx = fx;
   const fmGain = createGain(0.1);
   const synthGain = createGain(0.3);
   const synths = {
@@ -64,14 +65,14 @@ const initPromise = getAudioBuffer(impulseResponse).then(buffer => {
     harmonicSynth: new EasyHarmonicSynth()
   };
 
-  connect(synths.fmSynth, fmGain, fxPreset);
-  connect(synths.harmonicSynth, synthGain, fxPreset);
-  connect(fxPreset, ctx.destination);
+  connect(synths.fmSynth, fmGain, fx);
+  connect(synths.harmonicSynth, synthGain, fx);
+  connect(fx, ctx.destination);
 
   const chords = new Chords(synths.harmonicSynth);
   clock.addCallback(chords.playRandomChord.bind(chords));
 
-  return [clock, chords, synths];
+  return [clock, chords, synths, fx];
 });
 
 module.exports = {

@@ -13,8 +13,7 @@ const fxPreset1 = (convolverBuffer) => {
   const delay = createDelayFeedback({
     delayTime: 1.333,
     feedback: 0.4,
-    dryMix: 1,
-    wetMix: 0.7,
+    mix: 0.4,
     cutoff: 1000
   });
 
@@ -25,9 +24,13 @@ const fxPreset1 = (convolverBuffer) => {
     filter
   );
 
-  return node(delay, filter);
+  return node(delay, filter, {
+    setReverbMix: reverb.setMix,
+    setDistortionAmount: distortion.setDistortion,
+    setDelayTime: delay.setDelayTime,
+    setDelayMix: delay.setMix
+  });
 };
 
 
 module.exports = {fxPreset1};
-

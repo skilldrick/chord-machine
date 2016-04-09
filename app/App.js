@@ -72,7 +72,7 @@ class App extends Component {
           description="Beats per minute."
           disabled={this.state.disabled}
           initialValue={this.props.bpm}
-          onChange={(value) => this.bpmChanged(value)}
+          onChange={(value) => this.bpmChange(value)}
         />
 
         <SliderGroup
@@ -221,6 +221,45 @@ class App extends Component {
           ]}
         />
 
+
+        <SliderGroup
+          title="FX"
+          disabled={this.state.disabled}
+          modelObject={this.props.fxSettings}
+          onChange={ (settings) => this.fxSettingsChange(settings) }
+          step={0.1}
+          sliderProps={[
+            {
+              title: "Reverb Mix",
+              key: "reverbMix",
+              description: "The mix of clean to reverb.",
+              minValue: 0,
+              maxValue: 1,
+            },
+            {
+              title: "Distortion",
+              key: "distortionAmount",
+              description: "The amount of distortion applied. 1 is neutral.",
+              minValue: 0,
+              maxValue: 4,
+            },
+            {
+              title: "Delay Time",
+              key: "delayTime",
+              description: "The length of the delay.",
+              minValue: 0.1,
+              maxValue: 2,
+            },
+            {
+              title: "Delay Mix",
+              key: "delayMix",
+              description: "The mix of clean to delay.",
+              minValue: 0,
+              maxValue: 1,
+            }
+          ]}
+        />
+
         <Footer />
       </div>
     );
@@ -245,7 +284,21 @@ class App extends Component {
     this.setState({ playing: false });
   }
 
-  bpmChanged = (value) => {
+  // Helper method for applying settings changes
+  applySettingsWithSetters = (target, settings) => {
+    Object.keys(settings).forEach((key) => {
+      const setterName = 'set' + key[0].toUpperCase() + key.slice(1);
+      if (typeof target[setterName] == 'function') {
+        target[setterName](settings[key]);
+      } else {
+        throw new Error("Target has no setter method named " + setterName);
+      }
+    });
+  }
+
+  applySettingsWithProperties = (target, settings) => Object.assign(target, settings);
+
+  bpmChange = (value) => {
     this._clock.setBpm(value);
   }
 
@@ -267,15 +320,17 @@ class App extends Component {
   }
 
   harmonicSynthSettingsChange = (settings) => {
-    const harmonicSynth = this._synths.harmonicSynth;
-    harmonicSynth.oddEven(settings.oddEven);
-    harmonicSynth.lowHigh(settings.lowHigh);
+    this.applySettingsWithSetters(this._synths.harmonicSynth, settings);
   }
 
   adsrSettingsChange = (settings) => {
     Object.keys(this._synths).forEach((key) =>
       this._synths[key].adsr = settings
     );
+  }
+
+  fxSettingsChange = (settings) => {
+    this.applySettingsWithSetters(this._fx, settings);
   }
 
   constructor(props) {
@@ -286,10 +341,11 @@ class App extends Component {
       playing: false,
     };
 
-    init.initPromise.then(([clock, chords, synths]) => {
+    init.initPromise.then(([clock, chords, synths, fx]) => {
       this._clock = clock;
       this._chords = chords;
       this._synths = synths;
+      this._fx = fx;
 
       this.setState({
         disabled: false,
@@ -302,7 +358,8 @@ class App extends Component {
       this.harmonicSynthSettingsChange(this.props.harmonicSynthSettings);
       this.fmSynthSettingsChange(this.props.fmSynthSettings);
       this.adsrSettingsChange(this.props.adsrSettings);
-      this.bpmChanged(this.props.bpm);
+      this.fxSettingsChange(this.props.fxSettings);
+      this.bpmChange(this.props.bpm);
     });
   }
 
@@ -330,6 +387,12 @@ class App extends Component {
       decay: 0.05,
       sustain: 0.6,
       release: 0.2
+    },
+    fxSettings: {
+      reverbMix: 0.5,
+      distortionAmount: 1.2,
+      delayTime: 1.3,
+      delayMix: 0.4
     },
     chordSequence: 'hotelCalifornia',
     synthName: 'harmonicSynth'
