@@ -69,6 +69,7 @@ class App extends Component {
 
         <ValueSlider
           title="BPM"
+          description="Beats per minute."
           disabled={this.state.disabled}
           initialValue={this.props.bpm}
           onChange={(value) => this.bpmChanged(value)}
