@@ -16,10 +16,14 @@ class ValueSlider extends Component {
     fontFamily: "Roboto",
     verticalAlign: "middle",
     display: "inline-block",
-    height: "48px",
     minWidth: "68px",
     marginRight: "20px",
     paddingTop: "20px"
+  }
+
+  labelSpanStyle = {
+    borderBottom: "1px dashed #999",
+    cursor: "help"
   }
 
   inputStyle = {
@@ -33,7 +37,9 @@ class ValueSlider extends Component {
     return (
       <div style={{height: "50px"}}>
         <div style={this.labelStyle} title={this.props.description}>
-          {this.props.title}
+          <span style={this.labelSpanStyle}>
+            {this.props.title}
+          </span>
         </div>
         <Slider
           style={this.sliderStyle}
