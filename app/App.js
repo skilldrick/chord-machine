@@ -306,18 +306,18 @@ class App extends Component {
   }
 
   static defaultProps = {
-    bpm: 120,
+    bpm: 148,
     chordsSettings: {
       baseOctave: 3,
       octavesUp: 2,
       detune: 5,
-      notes: 2,
+      notes: 4,
       notesPerBar: 8,
-      barsPerChord: 1
+      barsPerChord: 2
     },
     harmonicSynthSettings: {
       oddEven: 0.6,
-      lowHigh: 0
+      lowHigh: 0.2
     },
     fmSynthSettings: {
       color: 8,
