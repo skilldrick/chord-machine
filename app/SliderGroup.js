@@ -39,7 +39,7 @@ class SliderGroup extends Component {
 
   onChange = (key, value) => {
     this.modelObject[key] = value;
-    this.props.onChange(this.modelObject);
+    this.props.onChange({ [key]: value });
   }
 
   constructor(props) {

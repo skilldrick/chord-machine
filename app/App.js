@@ -324,8 +324,12 @@ class App extends Component {
   }
 
   adsrSettingsChange = (settings) => {
-    Object.keys(this._synths).forEach((key) =>
-      this._synths[key].adsr = settings
+    const synths = this._synths;
+    // adsr changes apply to all synths
+    Object.keys(synths).forEach((key) => {
+      console.log(synths[key]);
+      Object.assign(synths[key].adsr, settings)
+    }
     );
   }
 

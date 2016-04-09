@@ -9,7 +9,7 @@ import {synth1, synth2, fxPreset1} from './presets';
 import {Chords} from './chords';
 
 class EasyHarmonicSynth extends HarmonicSynth {
-  constructor(adsr) {
+  constructor(adsr={}) {
     super(adsr, []);
     this._oddEven = 0;
     this._lowHigh = 0;
