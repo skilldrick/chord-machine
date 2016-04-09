@@ -135,7 +135,7 @@ class App extends Component {
             {
               title: "Odd:Even",
               key: "oddEven",
-              description: "",
+              description: "Odd vs even harmonics.",
               minValue: 0,
               maxValue: 1,
               step: 0.1
@@ -143,7 +143,7 @@ class App extends Component {
             {
               title: "Low:High",
               key: "lowHigh",
-              description: "",
+              description: "Low vs high harmonics.",
               minValue: 0,
               maxValue: 1,
               step: 0.1
@@ -312,8 +312,8 @@ class App extends Component {
       octavesUp: 2,
       detune: 5,
       notes: 2,
-      notesPerBar: 4,
-      barsPerChord: 2
+      notesPerBar: 8,
+      barsPerChord: 1
     },
     harmonicSynthSettings: {
       oddEven: 0.6,
