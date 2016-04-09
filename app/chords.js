@@ -117,17 +117,18 @@ class Chords {
   }
 
   playRandomChord(beat, now, timeUntilBeat, beatLength) {
-    const bar = Math.floor(beat / beatsPerChord);
-    const beatsPerChord = this.beatsPerBar * this.barsPerChord;
-    const beatWithinBar = beat % this.beatsPerBar;
-    const noteLengthInBeats = this.beatsPerBar / this.notesPerBar;
-    const noteLength = noteLengthInBeats * beatLength;
+    const beatWithinBar = beat % this.beatsPerBar; // which beat of the bar?
+    const bar = Math.floor(beat / (this.beatsPerBar * this.barsPerChord)); // which bar are we in?
+    const noteLengthInBeats = this.beatsPerBar / this.notesPerBar; // length of note in beats
+    const noteLength = noteLengthInBeats * beatLength; // length of notes in seconds
 
-    for (let i = 0; i < this.notesPerBar; i++) {
-      const noteTimeInBeats = i * noteLengthInBeats;
+    // Loop through the number of notes per bar and for each
+    // check to see if it's in the current beat
+    for (let noteWithinBar = 0; noteWithinBar < this.notesPerBar; noteWithinBar++) {
+      const noteWithinBarInBeats = noteWithinBar * noteLengthInBeats;
 
-      if (noteTimeInBeats >= beatWithinBar && noteTimeInBeats < beatWithinBar + 1) {
-        const noteOffset = noteTimeInBeats - beatWithinBar;
+      if (noteWithinBarInBeats >= beatWithinBar && noteWithinBarInBeats < beatWithinBar + 1) {
+        const noteOffset = noteWithinBarInBeats - beatWithinBar;
         const timeUntilNote = timeUntilBeat + noteOffset * beatLength;
         this.playRandomNotes(this.getChord(bar), now + timeUntilNote, noteLength, this.notes);
       }
