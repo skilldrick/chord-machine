@@ -1,34 +1,40 @@
 import {connect, node} from 'sine/util';
 import {HarmonicSynth} from 'sine/synth';
-import {createDistortion, createDelayFeedback, createReverb} from 'sine/fx';
-import {createFilter} from 'sine/nodes';
+import {Distortion, FeedbackDelay, Reverb} from 'sine/fx';
+import {createGain, createFilter} from 'sine/nodes';
 
 // fxPreset1 requires a convolver buffer.
 // This is passed in so the application has control of resource loading
 const fxPreset1 = (convolverBuffer) => {
-  const filter = createFilter(3000);
-  const distortion = createDistortion(1.2);
-  const reverb = createReverb(0.5, convolverBuffer);
+  const input = createGain();
+  const output = createGain();
+  const filter = createFilter(9000);
+  const distortion = new Distortion(1.2);
+  const reverb = new Reverb(0.5, convolverBuffer);
 
-  const delay = createDelayFeedback({
+  const delay = new FeedbackDelay({
     delayTime: 1.333,
-    feedback: 0.4,
+    feedback: 0.7, //TODO: add feedback UI
     mix: 0.4,
     cutoff: 1000
   });
 
   connect(
-    delay,
+    input,
     distortion,
+    delay,
     reverb,
-    filter
+    filter,
+    output
   );
 
-  return node(delay, filter, {
+  return node(input, output, {
     setReverbMix: reverb.setMix,
     setDistortionAmount: distortion.setDistortion,
     setDelayTime: delay.setDelayTime,
-    setDelayMix: delay.setMix
+    setDelayMix: delay.setMix,
+    setDelayFeedbackGain: delay.setFeedbackGain,
+    setLowPassCutoff: (freq) => filter.frequency.value = freq
   });
 };
 

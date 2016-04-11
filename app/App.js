@@ -230,13 +230,6 @@ class App extends Component {
           step={0.1}
           sliderProps={[
             {
-              title: "Reverb Mix",
-              key: "reverbMix",
-              description: "The mix of clean to reverb.",
-              minValue: 0,
-              maxValue: 1,
-            },
-            {
               title: "Distortion",
               key: "distortionAmount",
               description: "The amount of distortion applied. 1 is neutral.",
@@ -256,7 +249,29 @@ class App extends Component {
               description: "The mix of clean to delay.",
               minValue: 0,
               maxValue: 1,
-            }
+            },
+            {
+              title: "Delay Feedback",
+              key: "delayFeedbackGain",
+              description: "The amount of signal to feedback.",
+              minValue: 0,
+              maxValue: 1,
+            },
+            {
+              title: "Reverb Mix",
+              key: "reverbMix",
+              description: "The mix of clean to reverb.",
+              minValue: 0,
+              maxValue: 1,
+            },
+            {
+              title: "Low-pass cutoff",
+              key: "lowPassCutoff",
+              description: "The cutoff frequency of the lowpass filter.",
+              minValue: 20,
+              maxValue: 9999,
+              step: 1
+            },
           ]}
         />
 
@@ -393,10 +408,12 @@ class App extends Component {
       release: 0.2
     },
     fxSettings: {
+      distortionAmount: 1.5,
+      delayTime: 0.6,
+      delayMix: 0.6,
+      delayFeedbackGain: 0.6,
       reverbMix: 0.5,
-      distortionAmount: 1.2,
-      delayTime: 1.3,
-      delayMix: 0.4
+      lowPassCutoff: 3000
     },
     chordSequence: 'hotelCalifornia',
     synthName: 'harmonicSynth'
