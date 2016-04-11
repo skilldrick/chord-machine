@@ -14,7 +14,7 @@ const fxPreset1 = (convolverBuffer) => {
 
   const delay = new FeedbackDelay({
     delayTime: 1.333,
-    feedback: 0.7, //TODO: add feedback UI
+    feedback: 0.7,
     mix: 0.4,
     cutoff: 1000
   });

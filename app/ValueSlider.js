@@ -16,7 +16,7 @@ class ValueSlider extends Component {
     fontFamily: "Roboto",
     verticalAlign: "middle",
     display: "inline-block",
-    minWidth: "68px",
+    minWidth: "110px",
     marginRight: "20px",
     paddingTop: "20px"
   }
