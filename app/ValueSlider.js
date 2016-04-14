@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Slider from 'material-ui/lib/slider';
 import TextField from 'material-ui/lib/text-field';
 import _ from 'lodash';

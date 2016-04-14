@@ -1,7 +1,7 @@
-import {connect, node} from 'sine/util';
-import {HarmonicSynth} from 'sine/synth';
-import {Distortion, FeedbackDelay, Reverb} from 'sine/fx';
-import {createGain, createFilter} from 'sine/nodes';
+import { connect, node } from 'sine/util';
+import { HarmonicSynth } from 'sine/synth';
+import { Distortion, FeedbackDelay, Reverb } from 'sine/fx';
+import { createGain, createFilter } from 'sine/nodes';
 
 // fxPreset1 requires a convolver buffer.
 // This is passed in so the application has control of resource loading

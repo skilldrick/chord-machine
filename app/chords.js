@@ -1,4 +1,4 @@
-import {noteToFreq} from 'sine/util';
+import { noteToFreq } from 'sine/util';
 import fx from 'sine/fx';
 
 // Numbers of semitones from A

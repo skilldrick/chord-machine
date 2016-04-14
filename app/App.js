@@ -1,6 +1,6 @@
 // react stuff
-import React, {Component} from 'react';
-import {render} from 'react-dom';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // material-ui components
@@ -16,7 +16,7 @@ import Footer from './Footer';
 
 // audio stuff
 import init from './init';
-import {sequences} from './chords';
+import { sequences } from './chords';
 
 class App extends Component {
   buttonStyle = {
