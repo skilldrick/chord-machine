@@ -102,21 +102,13 @@ class Chords {
     this.playFreq(freq, start, length);
   }
 
-  /*
-  playRandomNotes(chord, start, length, count) {
-    const noteLength = length / count;
-    for (let i = 0; i < count; i++) {
-      this.playRandomNote(chord, start + i * noteLength, noteLength);
-    }
-  }
-  */
   playRandomNotes(chord, start, length, howMany) {
     for (let i = 0; i < howMany; i++) {
       this.playRandomNote(chord, start, length);
     }
   }
 
-  playRandomChord(beat, now, timeUntilBeat, beatLength) {
+  playRandomChord(beat, when, beatLength) {
     const beatWithinBar = beat % this.beatsPerBar; // which beat of the bar?
     const bar = Math.floor(beat / (this.beatsPerBar * this.barsPerChord)); // which bar are we in?
     const noteLengthInBeats = this.beatsPerBar / this.notesPerBar; // length of note in beats
@@ -129,8 +121,7 @@ class Chords {
 
       if (noteWithinBarInBeats >= beatWithinBar && noteWithinBarInBeats < beatWithinBar + 1) {
         const noteOffset = noteWithinBarInBeats - beatWithinBar;
-        const timeUntilNote = timeUntilBeat + noteOffset * beatLength;
-        this.playRandomNotes(this.getChord(bar), now + timeUntilNote, noteLength, this.notes);
+        this.playRandomNotes(this.getChord(bar), when(noteOffset), noteLength, this.notes);
       }
     }
   }
