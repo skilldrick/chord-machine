@@ -23,7 +23,7 @@ const initPromise = getAudioBuffer(impulseResponse).then(buffer => {
   connect(fx, ctx.destination);
 
   const chords = new Chords(synths.harmonicSynth);
-  clock.addCallback(chords.playRandomChord.bind(chords));
+  clock.onBeat(chords.playRandomChord.bind(chords));
 
   return [clock, chords, synths, fx];
 });
