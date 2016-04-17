@@ -108,11 +108,10 @@ class Chords {
     }
   }
 
-  playRandomChord(beat, when, beatLength) {
+  playRandomChord(beat, when, length) {
     const beatWithinBar = beat % this.beatsPerBar; // which beat of the bar?
     const bar = Math.floor(beat / (this.beatsPerBar * this.barsPerChord)); // which bar are we in?
     const noteLengthInBeats = this.beatsPerBar / this.notesPerBar; // length of note in beats
-    const noteLength = noteLengthInBeats * beatLength; // length of notes in seconds
 
     // Loop through the number of notes per bar and for each
     // check to see if it's in the current beat
@@ -121,7 +120,7 @@ class Chords {
 
       if (noteWithinBarInBeats >= beatWithinBar && noteWithinBarInBeats < beatWithinBar + 1) {
         const noteOffset = noteWithinBarInBeats - beatWithinBar;
-        this.playRandomNotes(this.getChord(bar), when(noteOffset), noteLength, this.notes);
+        this.playRandomNotes(this.getChord(bar), when(noteOffset), length(noteLengthInBeats), this.notes);
       }
     }
   }

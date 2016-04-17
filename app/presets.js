@@ -1,4 +1,4 @@
-import { connect, node } from 'sine/util';
+import { connect, Node } from 'sine/util';
 import { HarmonicSynth } from 'sine/synth';
 import { Distortion, FeedbackDelay, Reverb } from 'sine/fx';
 import { createGain, createFilter } from 'sine/nodes';
@@ -28,7 +28,9 @@ const fxPreset1 = (convolverBuffer) => {
     output
   );
 
-  return node(input, output, {
+  const node = new Node(input, output);
+
+  return Object.assign(node, {
     setReverbMix: reverb.setMix,
     setDistortionAmount: distortion.setDistortion,
     setDelayTime: delay.setDelayTime,
